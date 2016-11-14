@@ -24,6 +24,8 @@ import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.util.StringUtils;
 
+import org.jsoup.Jsoup
+
 /**
  * A Person can have zero to n PersonName(s).
  */
@@ -173,7 +175,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 	 * @return Returns the degree.
 	 */
 	public String getDegree() {
-		return degree;
+		return Jsoup.parse(degree).text();
 	}
 	
 	/**
@@ -191,7 +193,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		if (OpenmrsConstants.OBSCURE_PATIENTS) {
 			return OpenmrsConstants.OBSCURE_PATIENTS_FAMILY_NAME;
 		}
-		return familyName;
+		return Jsoup.parse(familyName).text();
 	}
 	
 	/**
@@ -209,7 +211,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		if (OpenmrsConstants.OBSCURE_PATIENTS) {
 			return null;
 		}
-		return familyName2;
+		return Jsoup.parse(familyName2).text();
 	}
 	
 	/**
@@ -227,7 +229,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		if (OpenmrsConstants.OBSCURE_PATIENTS) {
 			return null;
 		}
-		return familyNamePrefix;
+		return Jsoup.parse(familyNamePrefix).text();
 	}
 	
 	/**
@@ -245,7 +247,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		if (OpenmrsConstants.OBSCURE_PATIENTS) {
 			return null;
 		}
-		return familyNameSuffix;
+		return Jsoup.parse(familyNameSuffix).text();
 	}
 	
 	/**
@@ -263,7 +265,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		if (OpenmrsConstants.OBSCURE_PATIENTS) {
 			return OpenmrsConstants.OBSCURE_PATIENTS_GIVEN_NAME;
 		}
-		return givenName;
+		return Jsoup.parse(givenName).text();
 	}
 	
 	/**
@@ -281,7 +283,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		if (OpenmrsConstants.OBSCURE_PATIENTS) {
 			return OpenmrsConstants.OBSCURE_PATIENTS_MIDDLE_NAME;
 		}
-		return middleName;
+		return Jsoup.parse(middleName).text();
 	}
 	
 	/**
@@ -352,7 +354,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		if (OpenmrsConstants.OBSCURE_PATIENTS) {
 			return null;
 		}
-		return prefix;
+		return Jsoup.parse(prefix).text();
 	}
 	
 	/**
@@ -407,7 +409,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 		
 		String nameString = StringUtils.collectionToDelimitedString(temp, " ");
 		
-		return nameString.trim();
+		return Jsoup.parse(nameString.trim()).text();
 	}
 	
 	/**
@@ -416,7 +418,7 @@ public class PersonName extends BaseOpenmrsData implements java.io.Serializable,
 	@Override
 	public String toString() {
 		//This should not be changed due to extensive usage in UI.
-		return getFullName();
+		return Jsoup.parse(getFullName()).text()getFullName();
 	}
 	
 	/**
