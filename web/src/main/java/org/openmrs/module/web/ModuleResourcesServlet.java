@@ -24,6 +24,8 @@ import org.openmrs.module.Module;
 import org.openmrs.module.ModuleUtil;
 import org.openmrs.util.OpenmrsUtil;
 
+import java.net.URI;
+
 public class ModuleResourcesServlet extends HttpServlet {
 	
 	private static final String MODULE_PATH = "/WEB-INF/view/module/";
@@ -101,13 +103,41 @@ public class ModuleResourcesServlet extends HttpServlet {
 		
 		realPath = realPath.replace("/", File.separator);
 		
-		File f = new File(realPath);
-		if (!f.exists()) {
-			log.warn("No file with path '" + realPath + "' exists for module '" + module.getModuleId() + "'");
-			return null;
+		String safePath = removeDoubleDots(realPath);
+
+		File f;
+
+		if (hasPathPrefix(safePath, "/omod/target/classes/web/module/resources") 
+			&& excludesSuffixes(safePath, new String[] { ".exe", ".sh" } )) {
+
+			f = new File(realPath);
+			if (!f.exists()) {
+				log.warn("No file with path '" + realPath + "' exists for module '" + module.getModuleId() + "'");
+				return null;
+			}
+
 		}
+
 		
 		return f;
 	}
 	
+	boolean hasPathPrefix(String path, String prefix) {
+		return path.startsWith(prefix);
+	}
+
+	boolean excludesSuffixes(String path, String[] suffixes) {
+		for (int i = 0; i < suffixes.length; i++) {
+			if (path.endsWith(suffixes[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	String removeDoubleDots(String path) {
+		String normalized = new URI(path).normalize().getPath();
+		return normalized;
+	}
+
 }
