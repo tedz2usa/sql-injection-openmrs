@@ -24,6 +24,8 @@ import liquibase.exception.SetupException;
 import liquibase.exception.ValidationErrors;
 import liquibase.resource.ResourceAccessor;
 
+import java.util.UUID;
+
 /**
  * Moves un voided allergies from the old active_list and active_list_allergy tables to the new
  * allergy and allergy_recation tables
@@ -158,12 +160,25 @@ public class MigrateAllergiesChangeSet implements CustomTaskChange {
 		if (rs.next()) {
 			String uuid = rs.getString("property_value");
 			
-			rs = stmt.executeQuery("SELECT concept_id FROM concept WHERE uuid = '" + uuid + "'");
-			if (rs.next()) {
-				return rs.getInt("concept_id");
+			if (isValidUUID(uuid)) {
+				rs = stmt.executeQuery("SELECT concept_id FROM concept WHERE uuid = '" + uuid + "'");
+				if (rs.next()) {
+					return rs.getInt("concept_id");
+				}
 			}
+
+
 		}
 		
 		throw new IllegalStateException("Configuration required: " + globalPropertyName);
+	}
+
+	boolean isValidUUID(String uuidString) {
+		try{
+		    UUID uuid = UUID.fromString(uuidString);
+		    return true;
+		} catch (IllegalArgumentException exception){
+		    return false;
+		}
 	}
 }
